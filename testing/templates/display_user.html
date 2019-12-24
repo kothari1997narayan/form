@@ -3,6 +3,6 @@
         <div class="post">
             <p>{{ user.username|linebreaksbr }}</p>
 	    <p>{{ user.email|linebreaksbr }}</p>
-    	<img src="{{ user.userprofile.image.url }}" width="240">
+    	<img src="{{ user.image.url }}" width="240">
         </div>
 {% endblock content %}

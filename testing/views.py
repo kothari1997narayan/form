@@ -51,3 +51,13 @@ def display_user(request, pk=None):
         user = request.user
     userprofile = UserProfile.objects.get( user = user)
     return render(request, 'display_user.html', {'user': user ,'userprofile': userprofile})
+
+
+def all_users(request):
+    users = User.objects.all()
+    return render(request, 'all_users.html', {'users': users})
+
+def user_detail(request, pk):
+    user = User.objects.get(pk=pk)
+    userprofile = UserProfile.objects.get( user = user)
+    return render(request, 'display_user.html', {'user': user ,'userprofile': userprofile})

@@ -13,6 +13,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
+from .models import UserProfile
+
 def new_user(request):
     # if request.method =='POST':
     #     form = RegistrationForm(request.POST)
@@ -27,13 +29,16 @@ def new_user(request):
     #     form = RegistrationForm()
     #     return render(request, 'new_user.html', {'form': form})
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
+            userprofile = UserProfile.objects.get(user = user)
+            userprofile.image = form.cleaned_data.get('image')
+            userprofile.save()
             return redirect('display_user')
     else:
         form = RegistrationForm()
@@ -44,4 +49,5 @@ def display_user(request, pk=None):
         user = User.objects.get(pk=pk)
     else:
         user = request.user
-    return render(request, 'display_user.html', {'user': user})
+    userprofile = UserProfile.objects.get( user = user)
+    return render(request, 'display_user.html', {'user': user ,'userprofile': userprofile})

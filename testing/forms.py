@@ -14,10 +14,9 @@ class RegistrationForm(UserCreationForm):
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
-        # user.image = self.cleaned_data.get('image')
+        user.image = self.cleaned_data.get('image')
+        
         user.save()
-        user.userprofile.image = self.cleaned_data.get('image')
-        user.userprofile.save()
         if commit:
         	user.save()
         return user
